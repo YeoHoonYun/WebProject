@@ -2,6 +2,7 @@ package yun.fast.webproject.board.DAO;
 
 import yun.fast.webproject.board.DTO.Board;
 
+import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +21,7 @@ public class BoardDAO implements BoardDAOImpl{
         ResultSet rs = null;
         String sql = "select b.id as id, b.title as title, b.user_id as userId, b.content as content, b.regdate as regdate " +
                      "from board b, user u " +
-                     "where b.user_id = u.user_id order by b.id";
+                     "where b.user_id = u.user_id order by b.id DESC";
         try {
             conn = DBConnector.connect();
             ps = conn.prepareStatement(sql);
@@ -56,8 +57,7 @@ public class BoardDAO implements BoardDAOImpl{
         String sql = "select b.id as id, b.title as title, b.user_id as userId, b.content as content, b.regdate as regdate " +
                 "from board b, user u " +
                 "where b.user_id = u.user_id " +
-                "and b.id = ? " +
-                "order by b.id";
+                "and b.id = ? ";
         try {
             conn = DBConnector.connect();
             ps = conn.prepareStatement(sql);
@@ -98,6 +98,48 @@ public class BoardDAO implements BoardDAOImpl{
             ps.setString(1,title);
             ps.setString(2, userId);
             ps.setString(3, content);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteBoard(Long id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        String sql = "delete from board where id = ?";
+        try {
+            conn = DBConnector.connect();
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1,id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateBoard(Long id, String title, String content) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        String sql = "UPDATE board SET title = ?, content = ? WHERE id = ?";
+        try {
+            conn = DBConnector.connect();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,title);
+            ps.setString(2, content);
+            ps.setLong(3,id);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

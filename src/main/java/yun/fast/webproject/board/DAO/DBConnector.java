@@ -9,7 +9,7 @@ import java.sql.*;
 public class DBConnector {
     private static final String USERNAME = "yun";
     private static final String PASSWORD = "hadoop";
-    private static final String CONN_STRING = "jdbc:mysql://192.168.0.101:3306/fastcampus?characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
+    private static final String CONN_STRING = "jdbc:mysql://192.168.0.101:3306/fastcampus?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useSSL=false";
 
     public static Connection connect(){
         Connection conn = null;

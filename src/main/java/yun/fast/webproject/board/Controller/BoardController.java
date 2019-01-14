@@ -1,6 +1,6 @@
 package yun.fast.webproject.board.Controller;
 
-import com.mysql.cj.Session;
+import org.apache.commons.collections4.ListUtils;
 import yun.fast.webproject.board.DAO.BoardDAO;
 import yun.fast.webproject.board.DTO.Board;
 
@@ -20,6 +20,7 @@ import java.util.List;
  */
 @WebServlet(name = "BoardController", urlPatterns = "/board/*")
 public class BoardController extends HttpServlet {
+    private static final int PAGESIZE = 5;
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
@@ -45,16 +46,31 @@ public class BoardController extends HttpServlet {
             requestDispatcher.forward(req,resp);
 
         }else if(req.getPathInfo().contains("/update")){
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/views/update.jsp");
-            requestDispatcher.forward(req,resp);
-
+            if(req.getQueryString()!= null){
+                String title = req.getParameter("title");
+                String content = req.getParameter("content");
+                Long id = Long.parseLong(req.getParameter("id"));
+                boardDAO.updateBoard(id, title, content);
+                resp.sendRedirect("/board/main");
+            }
+            else{
+                Board board = boardDAO.selectOneBoard(Long.parseLong(req.getPathInfo().substring(8)));
+                req.setAttribute("board", board);
+                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/views/update.jsp");
+                requestDispatcher.forward(req,resp);
+            }
         }else if(req.getPathInfo().contains("/delete")){
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/views/main.jsp");
-            requestDispatcher.forward(req,resp);
+            boardDAO.deleteBoard(Long.parseLong(req.getParameter("id")));
+            resp.sendRedirect("/board/main");
 
         }else if(req.getPathInfo().contains("/main")){
-            List<Board> boards = boardDAO.selectLists();
-            req.setAttribute("list", boards);
+            int page = 1;
+            List<List<Board>> boards = ListUtils.partition(boardDAO.selectLists(),PAGESIZE);
+            if(req.getParameter("p") != null){
+                page = Integer.parseInt(req.getParameter("p"));
+            }
+            req.setAttribute("size", boards.size());
+            req.setAttribute("list", boards.get(page-1));
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/views/main.jsp");
             requestDispatcher.forward(req,resp);
 

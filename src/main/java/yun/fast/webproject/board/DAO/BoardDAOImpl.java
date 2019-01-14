@@ -11,6 +11,8 @@ import java.util.List;
 public interface BoardDAOImpl {
     List<Board> selectLists();
     Board selectOneBoard(Long id);
-    void insertBoard(String title, String userId, String passwd);
+    void insertBoard(String title, String userId, String content);
+    void deleteBoard(Long id);
+    void updateBoard(Long id, String title, String content);
 
 }

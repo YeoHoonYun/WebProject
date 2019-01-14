@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="text-center"><a href="/">테스트 페이지</a></h1>
+    <h1 class="text-center"><a href="/board/main">테스트 페이지</a></h1>
     <form method="post" action="/board/insert">
         <div class="form-group">
             <label>제목</label>
