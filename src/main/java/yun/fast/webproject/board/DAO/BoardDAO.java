@@ -2,10 +2,7 @@ package yun.fast.webproject.board.DAO;
 
 import yun.fast.webproject.board.DTO.Board;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +69,7 @@ public class BoardDAO implements BoardDAOImpl{
                 String title = rs.getString(2);
                 String writer = rs.getString(3);
                 String content = rs.getString(4);
-                Date regdate = rs.getDate(5);
+                Timestamp regdate = rs.getTimestamp(5);
 
                 board = new Board(num,title,writer,content,regdate);
             }else {
