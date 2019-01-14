@@ -21,8 +21,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6"><h4>제목 : ${board.title}</h4></div>
-        <div class="col-md-3"><h4>ID : ${board.id}</h4></div>
-        <div class="col-md-3"><h4>등록일 : ${board.localDateTime}</h4></div>
+        <div class="col-md-3"><h4>ID : ${board.userId}</h4></div>
+        <div class="col-md-3"><h4>등록일 : ${board.regdate}</h4></div>
     </div>
     <div class="row">
         <div class="col-md-12"><h4>내용</h4></div>
@@ -31,8 +31,8 @@
         <textarea class="form-control" readonly="readonly" id="content" rows="10"  placeholder="내용">${board.content}</textarea>
     </div>
     <hr/>
-    <a class="btn btn-default" href="/board/write/${board.num}">수정</a>
-    <a class="btn btn-default" href="/board/delete/${board.num}">삭제</a>
+    <a class="btn btn-default" href="/board/write?id=${board.id}">수정</a>
+    <a class="btn btn-default" href="/board/delete?id=${board.id}">삭제</a>
 </div>
 <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
 <script type="text/javascript" src="http:code.jquery.com/jquery-1.8.3.min.js"></script>

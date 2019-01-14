@@ -19,7 +19,7 @@
 <body>
 <div class="container">
     <h1 class="text-center"><a href="/">테스트 페이지</a></h1>
-    <form method="post" action="/board/update/${board.num}">
+    <form method="post" action="/board/update?id=${board.id}">
         <div class="form-group">
             <label>제목</label>
             <input type="title" class="form-control" name="title" placeholder="제목" value="${board.title}">
@@ -30,7 +30,7 @@
         </div>
         <div class="form-group">
             <label>ID</label>
-            <input type="id" class="form-control" name="id" placeholder="ID" value="${board.id}">
+            <input type="id" class="form-control" name="writer" placeholder="Writer" value="${board.userId}">
         </div>
         <button type="submit" class="btn btn-default">수정</button>
     </form>

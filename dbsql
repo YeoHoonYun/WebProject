@@ -1,12 +1,41 @@
-CREATE TABLE board(
-   id BIGINT AUTO_INCREMENT,
-   title VARCHAR(255) NOT NULL,
-   writer VARCHAR(255) NOT NULL,
-   content LONGTEXT NOT NULL,
-   regdate DATETIME NOT NULL DEFAULT     CURRENT_TIMESTAMP,
-   read_count INT NOT NULL DEFAULT 0,
-   groupno INT NOT NULL,
-   grpord   INT NOT NULL,
-   depth  INT NOT NULL,
-  PRIMARY KEY(id)
+CREATE TABLE user(
+ id BIGINT AUTO_INCREMENT,
+user_id VARCHAR(255) NOT NULL UNIQUE, name VARCHAR(255) NOT NULL,
+ passwd VARCHAR(255) NOT NULL,
+ email VARCHAR(255) NOT NULL,
+PRIMARY KEY(id)
 );
+CREATE TABLE board(
+ id BIGINT AUTO_INCREMENT,
+ title VARCHAR(255) NOT NULL,
+ user_id VARCHAR(255) NOT NULL,
+ content LONGTEXT NOT NULL,
+ regdate DATETIME NOT NULL DEFAULT     CURRENT_TIMESTAMP,
+ read_count INT NOT NULL DEFAULT 0,
+ groupno INT NOT NULL,
+ grpord   INT NOT NULL,
+ depth  INT NOT NULL,
+FOREIGN KEY (user_id)
+REFERENCES user2(user_id) ON UPDATE CASCADE,
+PRIMARY KEY(id)
+);
+
+insert into board(title,user_id,content, groupno, grpord,depth) values("test1","홍길동","content test1",1,0,1);
+insert into board(title,user_id,content, groupno, grpord,depth) values("test2","둘리","content test2",2,0,1);
+insert into board(title,user_id,content, groupno, grpord,depth) values("test3","홍길동","content test3",3,0,1);
+insert into board(title,user_id,content, groupno, grpord,depth) values("test4","홍길동","content test4",4,0,1);
+insert into board(title,user_id,content, groupno, grpord,depth) values("test5","홍길동","content test5",5,0,1);
+insert into board(title,user_id,content, groupno, grpord,depth) values("test6","둘리","content test6",6,0,1);
+
+insert into board(title,user_id,content, groupno, grpord,depth) select "test8","둘리", "content test8",MAX(groupno)+1,0,1 from board;
+
+
+insert into user(user_id, passwd, email) values("홍길동","1111","hong@email.com");
+insert into user(user_id, passwd, email) values("둘리","2222","dul@email.com");
+insert into user(user_id, passwd, email) values("yun","3333","yun@email.com");
+
+select * from board;
+select * from user;
+
+drop table board;
+drop table user;

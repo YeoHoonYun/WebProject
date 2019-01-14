@@ -28,14 +28,6 @@
             <label>내용</label>
             <textarea class="form-control" name="content" rows="3"  placeholder="내용"></textarea>
         </div>
-        <div class="form-group">
-            <label class="sr-only">ID</label>
-            <input type="id" class="form-control" name="id" placeholder="아이디">
-        </div>
-        <div class="form-group">
-            <label class="sr-only">Password</label>
-            <input type="password" class="form-control" name="password" placeholder="패스워드">
-        </div>
         <button type="submit" class="btn btn-default">작성</button>
     </form>
 </div>
