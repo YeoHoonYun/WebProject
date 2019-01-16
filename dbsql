@@ -16,7 +16,7 @@ CREATE TABLE board(
  grpord   INT NOT NULL,
  depth  INT NOT NULL,
 FOREIGN KEY (user_id)
-REFERENCES user2(user_id) ON UPDATE CASCADE,
+REFERENCES user(user_id) ON UPDATE CASCADE,
 PRIMARY KEY(id)
 );
 
@@ -39,3 +39,120 @@ select * from user;
 
 drop table board;
 drop table user;
+
+
+use fastcampus;
+
+show tables;
+
+select * from user;
+select * from board;
+
+delete from board where id = 13;
+
+select exists (select id from board where groupno = 4 and grpord = 0);
+select MAX(grpord) from board where id = (select id from board where groupno = 4);
+
+UPDATE board SET grpord = grpord + 1 where groupno = 1 and grpord >= 1;
+
+insert into board(title,user_id,content, groupno, grpord,depth) select "test","yun", "test",3,MAX(grpord)+1,MAX(depth)+1 from board where groupno=3;
+
+select b.id as id, b.title as title, u.user_id as userId, b.content as content, b.regdate as regdate, b.read_count as readCount, b.groupno, b.grpord, b.depth
+from board b, user u
+where b.user_id = u.user_id
+order by b.groupno desc, b.grpord;
+
+drop table board;
+
+CREATE TABLE board(
+ id BIGINT AUTO_INCREMENT,
+ title VARCHAR(255) NOT NULL,
+ user_id VARCHAR(255) NOT NULL,
+ content LONGTEXT NOT NULL,
+ regdate DATETIME NOT NULL DEFAULT     CURRENT_TIMESTAMP,
+ read_count INT NOT NULL DEFAULT 0,
+ groupno INT NOT NULL DEFAULT 0,
+ grpord   INT NOT NULL,
+ depth  INT NOT NULL,
+FOREIGN KEY (user_id)
+REFERENCES user(user_id) ON UPDATE CASCADE,
+PRIMARY KEY(id)
+);
+
+insert into board(title,user_id,content, groupno, grpord,depth) select "test","yun","test01",MAX(groupno)+1,0,1 from board;
+
+SELECT *,
+CASE WHEN (groupno is null) THEN 0 ELSE MAX(groupno)+1 END as groupno
+FROM board;
+
+insert into board(title,user_id,content, groupno, grpord,depth) select "test","yun", "test",IFNULL(MAX(groupno)+1,0),0,1 from board;
+
+---------------------------------------------------------------------------------
+
+use fastcampus;
+
+select * from board;
+
+# 답글 없이 메인화면 리스트 출력
+select b.id as id, b.title as title, b.user_id as userId, b.content as content, b.regdate as regdate, b.read_count as readCount, b.depth as depth
+from board b, user u
+where b.user_id = u.user_id
+order by regdate desc;
+
+# 한건 조회
+select b.id as id, b.title as title, b.user_id as userId, b.content as content, b.regdate as regdate, b.read_count as readCount, b.depth as depth
+from board b, user u
+where b.user_id = u.user_id
+  and b.id = 1
+order by regdate desc;
+
+# board 테이블 데이터 입력하기
+insert into board (title, user_id, content, groupno, grpord, depth)
+select "첫번째 글입니다.", "yun", "content01", ifnull(MAX(groupno)+1,1), 0, 1
+  from board;
+insert into board (title, user_id, content, groupno, grpord, depth)
+select "두번째 글입니다.", "yun", "content01", ifnull(MAX(groupno)+1,1), 0, 1
+  from board;
+insert into board (title, user_id, content, groupno, grpord, depth)
+select "세번째 글입니다.", "yun", "content01", ifnull(MAX(groupno)+1,1), 0, 1
+  from board;
+
+# 조회수 입력
+update board SET read_count = read_count + 1 where id = 1;
+
+# 답글 생성(들어갈 groupno, grpord가 같은 곳이 있으면 기존에 있는 번호는 1을 증가하고 해당 번호에 넣는다)
+update board SET grpord = grpord + 1 where groupno = 2 and grpord >= 0 + 1;
+
+insert into board (title, user_id, content, groupno, grpord, depth)
+select "두번쨰 글의 세번째 답글입니다.", "yun", "content01", 2,
+  case
+	when exists (select id from board where groupno = 2 and grpord = 0 + 1) then MAX(grpord) + 1
+    else 0 + 1
+  end
+  , 1 + 1
+  from board;
+
+# 답글이 들어가 있는 보드 입력
+select b.id as id, b.title as title, u.user_id as userId, b.content as content, b.regdate as regdate, b.read_count as readCount, b.groupno as groupno, b.grpord as grpord, b.depth as depth
+from board b, user u
+where b.user_id = u.user_id
+order by b.groupno desc, b.grpord;
+
+#보드 삭제
+drop table board;
+
+#보드 생성
+CREATE TABLE board(
+ id BIGINT AUTO_INCREMENT,
+ title VARCHAR(255) NOT NULL,
+ user_id VARCHAR(255) NOT NULL,
+ content LONGTEXT NOT NULL,
+ regdate DATETIME NOT NULL DEFAULT     CURRENT_TIMESTAMP,
+ read_count INT NOT NULL DEFAULT 0,
+ groupno INT NOT NULL DEFAULT 0,
+ grpord   INT NOT NULL,
+ depth  INT NOT NULL,
+FOREIGN KEY (user_id)
+REFERENCES user(user_id) ON UPDATE CASCADE,
+PRIMARY KEY(id)
+);

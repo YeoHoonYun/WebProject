@@ -1,5 +1,6 @@
 package yun.fast.webproject.board.DTO;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -17,15 +18,28 @@ public class Board {
     private int grpord;
     private int depth;
 
-    public Board() {
-    }
-
     public Board(Long id, String title, String userId, String content, Date regdate) {
         this.id = id;
         this.title = title;
-        this.userId = userId;
         this.content = content;
+        this.userId = userId;
         this.regdate = regdate;
+    }
+
+    public Board(Long num, String title, String writer, String content, Date regdate, int readCount) {
+        this(num, title, writer, content, regdate);
+        this.readCount = readCount;
+    }
+
+    public Board(Long num, String title, String writer, String content, Date regdate, int readCount, int groupno, int grpord, int depth) {
+        this(num, title, writer, content, regdate, readCount);
+        this.groupno = groupno;
+        this.grpord = grpord;
+        this.depth = depth;
+    }
+
+    public Board() {
+
     }
 
     public Long getId() {

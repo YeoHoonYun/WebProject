@@ -23,10 +23,11 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">글번호</th>
-            <th scope="col">제목</th>
-            <th scope="col">ID</th>
-            <th scope="col">등록일</th>
+            <th scope="col-md-1">글번호</th>
+            <th scope="col-md-5">제목</th>
+            <th scope="col-md-2">ID</th>
+            <th scope="col-md-2">등록일</th>
+            <th scope="col-md-1">조회수</th>
         </tr>
         </thead>
         <tbody>
@@ -36,6 +37,7 @@
                 <td><a href="/board/detail?id=${board.id}">${board.title}</a></td>
                 <td>${board.userId}</td>
                 <td>${board.regdate}</td>
+                <td>${board.readCount}</td>
             </tr>
         </c:forEach>
         </tbody>

@@ -49,6 +49,12 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.3.0</version>
+        </dependency>
 
     </dependencies>
     <build>

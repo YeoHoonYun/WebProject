@@ -23,14 +23,29 @@
     <div class="row">
     <c:choose>
     <c:when test="${empty board.title}">
-            값이 없습니다.
+        <script type="text/javascript">
+            alert("ID : ${board.id}의 해당 글이 없습니다. ")
+        </script>
+        <div class="col-md-4"><h4>제목 : 값이 없습니다.</h4></div>
+        <div class="col-md-2"><h4>ID : </h4></div>
+        <div class="col-md-4"><h4>등록일 : </h4></div>
+        <div class="col-md-2">
+            <a class="btn btn-default pull-right" href="/board/main">목록</a>
         </div>
-        <%--<c:redirect url = "/board/main"/>--%>
+    </div>
+    <div class="row">
+        <div class="col-md-12"><h4>내용</h4></div>
+    </div>
+    <div class="row" style="height:50%">
+        <textarea class="form-control" readonly="readonly" rows="10"  placeholder="내용"></textarea>
+    </div>
+        <c:redirect url = "/board/main"/>
     </c:when>
         <c:otherwise>
-                <div class="col-md-4"><h4>제목 : ${board.title}</h4></div>
+                <div class="col-md-3"><h4>제목 : ${board.title}</h4></div>
                 <div class="col-md-2"><h4>ID : ${board.userId}</h4></div>
-                <div class="col-md-4"><h4>등록일 : ${board.regdate}</h4></div>
+                <div class="col-md-3"><h4>등록일 : ${board.regdate}</h4></div>
+                <div class="col-md-2"><h4>조회수 : ${board.readCount}</h4></div>
                 <div class="col-md-2">
                     <a class="btn btn-default pull-right" href="/board/main">목록</a>
                 </div>
@@ -49,6 +64,7 @@
 
     <a class="btn btn-default pull-right" href="/board/delete?id=${board.id}">삭제</a>
     <a class="btn btn-default pull-right" href="/board/update/${board.id}">수정</a>
+    <a class="btn btn-default pull-right" href="/board/addWrite?id=${board.id}">답글</a>
 
 </div>
 <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->

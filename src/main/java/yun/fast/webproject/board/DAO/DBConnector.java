@@ -1,5 +1,9 @@
 package yun.fast.webproject.board.DAO;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import javax.sql.DataSource;
 import java.sql.*;
 
 /**
@@ -7,42 +11,45 @@ import java.sql.*;
  * Github : https://github.com/YeoHoonYun
  */
 public class DBConnector {
-    private static final String USERNAME = "yun";
-    private static final String PASSWORD = "hadoop";
-    private static final String CONN_STRING = "jdbc:mysql://192.168.0.101:3306/fastcampus?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useSSL=false";
+    private static HikariConfig config = null;
+    private static DataSource ds = null;
+    private static DBConnector instance = new DBConnector();
 
-    public static Connection connect(){
+    private DBConnector(){
+        String configFile = "/datasource.properties";
+        HikariConfig config = new HikariConfig(configFile);
+
+//        HikariConfig config = new HikariConfig();
+//        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//        config.setJdbcUrl("jdbc:mysql://localhost:3306/connectdb?useUnicode=true&characterEncoding=UTF-8");
+//        config.setUsername("connect");
+//        config.setPassword("connect");
+
+        ds = new HikariDataSource(config);
+    }
+
+    public static DBConnector getInstance(){
+        return instance;
+    }
+
+    public static Connection getConnection(){
         Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
-        }catch (Exception e){
-            e.printStackTrace();
+            conn = ds.getConnection();
+        }catch(Exception ex){
+            ex.printStackTrace(); // 로그를 남기는 코드가 있어야 한다.
+            throw new RuntimeException("DB연결을 할 수 없습니다.");
         }
         return conn;
     }
 
-    public static void close(Connection conn, PreparedStatement ps, ResultSet rs){
-        try {
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public static void close(ResultSet rs, PreparedStatement ps, Connection conn){
+        try{ rs.close(); } catch(Exception ignore){}
         close(ps, conn);
     }
 
     public static void close(PreparedStatement ps, Connection conn){
-        try {
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        try{ ps.close(); } catch(Exception ignore){}
+        try{ conn.close(); } catch(Exception ignore){}
     }
 }
