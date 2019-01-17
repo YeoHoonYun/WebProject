@@ -11,12 +11,12 @@ import java.util.List;
 public interface BoardDAOImpl {
     List<Board> selectLists();
     Board selectOneBoard(Long id);
-    void insertBoard(String title, String userId, String content);
+    void insertBoard(String title, int id, String userId, String content);
     void deleteBoard(Long id);
     void updateBoard(Long id, String title, String content);
     void selectCount(Long id);
 //    boolean checkgrpord(int groupno, int grpord);
-    void createGrp(String title, String userId, String content, int groupno, int grpord, int depth);
+    void createGrp(String title, Long id, String userId, String content, int groupno, int grpord, int depth);
 //    void existCreategrp(Long id, String title, String userId, String content,int groupno, int grpord, int depth);
     void updateGrp(int groupno, int grpord);
 

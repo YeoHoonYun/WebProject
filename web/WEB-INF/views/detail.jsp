@@ -39,7 +39,7 @@
     <div class="row" style="height:50%">
         <textarea class="form-control" readonly="readonly" rows="10"  placeholder="내용"></textarea>
     </div>
-        <c:redirect url = "/board/main"/>
+        <%--<c:redirect url = "/board/detail?id=${board.id+1}"/>--%>
     </c:when>
         <c:otherwise>
                 <div class="col-md-3"><h4>제목 : ${board.title}</h4></div>

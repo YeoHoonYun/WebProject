@@ -3,6 +3,8 @@ package yun.fast.webproject.board.Controller;
 import org.apache.commons.collections4.ListUtils;
 import yun.fast.webproject.board.DAO.BoardDAO;
 import yun.fast.webproject.board.DTO.Board;
+import yun.fast.webproject.board.DTO.User;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +21,7 @@ import java.util.List;
  */
 @WebServlet(name = "BoardController", urlPatterns = "/board/*")
 public class BoardController extends HttpServlet {
-    private static final int PAGESIZE = 15;
+    private static final int PAGESIZE = 5;
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
@@ -27,14 +29,15 @@ public class BoardController extends HttpServlet {
         resp.setContentType("text/html");
 
         HttpSession session = req.getSession();
-        session.setAttribute("userId","yun");
+        User user = (User) session.getAttribute("userInfo");
 
         if(req.getPathInfo().contains("/insert")){
             String title = getPa(req, "title");
-            String userId = (String) session.getAttribute("userId");
+            int id = (Integer) session.getAttribute("id");
+            String userId = user.getName();
             String content = getPa(req, "content");
             BoardDAO boardDAO = new BoardDAO();
-            boardDAO.insertBoard(title, userId, content);
+            boardDAO.insertBoard(title,id,userId, content);
             resp.sendRedirect("/board/main");
 
         }else if(req.getPathInfo().contains("/detail")){
@@ -92,7 +95,7 @@ public class BoardController extends HttpServlet {
             }
             else{
                 boardDAO.updateGrp(intGetPa(req, "groupno"), intGetPa(req, "grpord"));
-                boardDAO.createGrp(getPa(req, "title"), (String) session.getAttribute("userId"), getPa(req, "content"), intGetPa(req, "groupno"),intGetPa(req, "grpord"),intGetPa(req, "depth"));
+                boardDAO.createGrp(getPa(req, "title"), user.getId(), user.getName(), getPa(req, "content"), intGetPa(req, "groupno"),intGetPa(req, "grpord"),intGetPa(req, "depth"));
                 resp.sendRedirect("/board/main");
             }
         }

@@ -12,6 +12,7 @@ import java.util.List;
  * Github : https://github.com/YeoHoonYun
  */
 public class BoardDAO implements BoardDAOImpl{
+
     @Override
     public List<Board> selectLists() {
         List<Board> boards = new ArrayList<>();
@@ -84,7 +85,7 @@ public class BoardDAO implements BoardDAOImpl{
     }
 
     @Override
-    public void insertBoard(String title, String userId, String content) {
+    public void insertBoard(String title, int id, String userId, String content) {
         Connection conn = null;
         PreparedStatement ps = null;
         String sql = BoardDaoSQL.INSERT;
@@ -92,8 +93,9 @@ public class BoardDAO implements BoardDAOImpl{
             conn = DBConnector.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setString(1,title);
-            ps.setString(2, userId);
-            ps.setString(3, content);
+            ps.setInt(2,id);
+            ps.setString(3, userId);
+            ps.setString(4, content);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,19 +156,22 @@ public class BoardDAO implements BoardDAOImpl{
         }
     }
     @Override
-    public void createGrp(String title, String userId, String content, int groupno, int grpord, int depth) {
+    public void createGrp(String title, Long id, String userId, String content, int groupno, int grpord, int depth) {
         Connection conn = null;
         PreparedStatement ps = null;
         String sql = BoardDaoSQL.INSERT_GROUP;
+        System.out.println(sql);
+        System.out.println(title + " | " +id+ " | " + userId+ " | " + content+ " | " + groupno+ " | " + grpord+ " | " + depth);
         try {
             conn = DBConnector.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setString(1,title);
-            ps.setString(2, userId);
-            ps.setString(3, content);
-            ps.setInt(4, groupno);
-            ps.setInt(5, grpord);
-            ps.setInt(6, depth);
+            ps.setLong(2,id);
+            ps.setString(3, userId);
+            ps.setString(4, content);
+            ps.setInt(5, groupno);
+            ps.setInt(6, grpord);
+            ps.setInt(7, depth);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -174,6 +179,7 @@ public class BoardDAO implements BoardDAOImpl{
             DBConnector.close(ps,conn);
         }
     }
+
     public void updateGrp(int groupno, int grpord) {
         Connection conn = null;
         PreparedStatement ps = null;

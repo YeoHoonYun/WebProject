@@ -19,24 +19,32 @@
 <body>
 <div class="container">
     <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="/">Home</a></li>
-        <li role="presentation"><a href="/join/">Sign Up</a></li>
+        <li role="presentation"><a href="/">Home</a></li>
+        <li role="presentation" class="active"><a href="/join/">Sign Up</a></li>
     </ul>
 </div>
 <br />
 <div class="container">
-    <form method="post" action="/">
+    <form method="post" action="/join/">
         <div class="form-group">
-            <label>아이디</label>
-            <input type="title" class="form-control" name="userid" placeholder="아이디">
+            <label>이름</label>
+            <input type="title" class="form-control" name="name" placeholder="이름">
         </div>
         <div class="form-group">
-            <label>패스워드</label>
-            <textarea class="form-control" name="passwd"placeholder="패스워드"></textarea>
+            <label>닉네임</label>
+            <input type="title" class="form-control" name="nickname" placeholder="닉네임">
         </div>
         <div class="form-group">
             <label>이메일</label>
-            <textarea class="form-control" name="email" placeholder="이메일"></textarea>
+            <input class="form-control" type="title" name="email" placeholder="이메일">
+        </div>
+        <div class="form-group">
+            <label>패스워드</label>
+            <input class="form-control" type="password" name="passwd1" placeholder="비밀번호">
+        </div>
+        <div class="form-group">
+            <label>패스워드 확인</label>
+            <input class="form-control" type="password" name="passwd2" placeholder="비밀번호">
         </div>
         <button type="submit" class="btn btn-default">가입</button>
     </form>

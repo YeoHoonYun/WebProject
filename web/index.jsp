@@ -27,16 +27,15 @@
 </div>
 <br />
 <div class="container">
-    <form method="post" action="/board/main">
+    <form method="post" action="/login">
         <div class="form-group">
             <label>아이디</label>
-            <input type="title" class="form-control" name="userid" placeholder="아이디">
+            <input type="title" class="form-control" name="email" placeholder="아이디">
         </div>
         <div class="form-group">
             <label>비밀번호</label>
             <input type="password" class="form-control" name="passwd" placeholder="비밀번호">
         </div>
-
         <button type="submit" class="btn btn-default">Login</button>
     </form>
 </div>
