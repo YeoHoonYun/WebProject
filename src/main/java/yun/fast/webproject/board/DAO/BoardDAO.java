@@ -1,6 +1,7 @@
 package yun.fast.webproject.board.DAO;
 
 import yun.fast.webproject.board.DTO.Board;
+import yun.fast.webproject.board.Util.DBConnector;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,10 +18,7 @@ public class BoardDAO implements BoardDAOImpl{
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "select b.id as id, b.title as title, u.user_id as userId, b.content as content, b.regdate as regdate, b.read_count as readCount, b.groupno as groupno, b.grpord as grpord, b.depth as depth " +
-                "from board b, user u " +
-                "where b.user_id = u.user_id " +
-                "order by b.groupno desc, b.grpord";
+        String sql = BoardDaoSQL.SELECT_BY_PAGING;
         try {
             conn = DBConnector.getConnection();
             ps = conn.prepareStatement(sql);
@@ -55,10 +53,7 @@ public class BoardDAO implements BoardDAOImpl{
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "select b.id as id, b.title as title, u.user_id as userId, b.content as content, b.regdate as regdate, b.read_count as readCount, b.groupno as groupno, b.grpord as grpord, b.depth as depth " +
-                "from board b, user u " +
-                "where b.user_id = u.user_id " +
-                "and b.id = ? ";
+        String sql = BoardDaoSQL.SELECT_BY_ID;
         try {
             conn = DBConnector.getConnection();
             ps = conn.prepareStatement(sql);
@@ -92,7 +87,7 @@ public class BoardDAO implements BoardDAOImpl{
     public void insertBoard(String title, String userId, String content) {
         Connection conn = null;
         PreparedStatement ps = null;
-        String sql = "insert into board(title,user_id,content, groupno, grpord,depth) select ?,?, ?,IFNULL(MAX(groupno)+1,1),0,1 from board";
+        String sql = BoardDaoSQL.INSERT;
         try {
             conn = DBConnector.getConnection();
             ps = conn.prepareStatement(sql);
@@ -111,7 +106,7 @@ public class BoardDAO implements BoardDAOImpl{
     public void deleteBoard(Long id) {
         Connection conn = null;
         PreparedStatement ps = null;
-        String sql = "delete from board where id = ?";
+        String sql = BoardDaoSQL.DELETE;
         try {
             conn = DBConnector.getConnection();
             ps = conn.prepareStatement(sql);
@@ -128,7 +123,7 @@ public class BoardDAO implements BoardDAOImpl{
     public void updateBoard(Long id, String title, String content) {
         Connection conn = null;
         PreparedStatement ps = null;
-        String sql = "UPDATE board SET title = ?, content = ? WHERE id = ?";
+        String sql = BoardDaoSQL.UPDATE;
         try {
             conn = DBConnector.getConnection();
             ps = conn.prepareStatement(sql);
@@ -146,7 +141,7 @@ public class BoardDAO implements BoardDAOImpl{
     public void selectCount(Long id) {
         Connection conn = null;
         PreparedStatement ps = null;
-        String sql = "UPDATE board SET read_count = read_count + 1 WHERE id = ?";
+        String sql = BoardDaoSQL.UPDATE_COUNT;
         try {
             conn = DBConnector.getConnection();
             ps = conn.prepareStatement(sql);
@@ -159,11 +154,10 @@ public class BoardDAO implements BoardDAOImpl{
         }
     }
     @Override
-    public void creategrp(String title, String userId, String content,int groupno, int grpord, int depth) {
+    public void createGrp(String title, String userId, String content, int groupno, int grpord, int depth) {
         Connection conn = null;
         PreparedStatement ps = null;
-        String sql = "insert into board (title, user_id, content, groupno, grpord, depth)" +
-                "values (?, ?, ?, ?,? + 1, ? + 1)";
+        String sql = BoardDaoSQL.INSERT_GROUP;
         try {
             conn = DBConnector.getConnection();
             ps = conn.prepareStatement(sql);
@@ -180,10 +174,10 @@ public class BoardDAO implements BoardDAOImpl{
             DBConnector.close(ps,conn);
         }
     }
-    public void updategrp(int groupno, int grpord) {
+    public void updateGrp(int groupno, int grpord) {
         Connection conn = null;
         PreparedStatement ps = null;
-        String sql = "UPDATE board SET grpord = grpord + 1 where groupno = ? and grpord >= ? + 1";
+        String sql = BoardDaoSQL.UPDATE_GRPORD;
         try {
             conn = DBConnector.getConnection();
             ps = conn.prepareStatement(sql);

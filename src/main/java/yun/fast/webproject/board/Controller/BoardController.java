@@ -91,8 +91,8 @@ public class BoardController extends HttpServlet {
                 requestDispatcher.forward(req, resp);
             }
             else{
-                boardDAO.updategrp(intGetPa(req, "groupno"), intGetPa(req, "grpord"));
-                boardDAO.creategrp(getPa(req, "title"), (String) session.getAttribute("userId"), getPa(req, "content"), intGetPa(req, "groupno"),intGetPa(req, "grpord"),intGetPa(req, "depth"));
+                boardDAO.updateGrp(intGetPa(req, "groupno"), intGetPa(req, "grpord"));
+                boardDAO.createGrp(getPa(req, "title"), (String) session.getAttribute("userId"), getPa(req, "content"), intGetPa(req, "groupno"),intGetPa(req, "grpord"),intGetPa(req, "depth"));
                 resp.sendRedirect("/board/main");
             }
         }

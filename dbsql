@@ -93,6 +93,9 @@ use fastcampus;
 
 select * from board;
 
+#글 삭제
+delete from board where id = 13;
+
 # 답글 없이 메인화면 리스트 출력
 select b.id as id, b.title as title, b.user_id as userId, b.content as content, b.regdate as regdate, b.read_count as readCount, b.depth as depth
 from board b, user u
@@ -120,7 +123,14 @@ select "세번째 글입니다.", "yun", "content01", ifnull(MAX(groupno)+1,1), 
 # 조회수 입력
 update board SET read_count = read_count + 1 where id = 1;
 
+# 답글이 들어가 있는 보드 입력
+select b.id as id, b.title as title, u.user_id as userId, b.content as content, b.regdate as regdate, b.read_count as readCount, b.groupno as groupno, b.grpord as grpord, b.depth as depth
+from board b, user u
+where b.user_id = u.user_id
+order by b.groupno desc, b.grpord;
+
 # 답글 생성(들어갈 groupno, grpord가 같은 곳이 있으면 기존에 있는 번호는 1을 증가하고 해당 번호에 넣는다)
+-----------------------------------------------------------------------------------------------------------
 update board SET grpord = grpord + 1 where groupno = 2 and grpord >= 0 + 1;
 
 insert into board (title, user_id, content, groupno, grpord, depth)
@@ -131,12 +141,9 @@ select "두번쨰 글의 세번째 답글입니다.", "yun", "content01", 2,
   end
   , 1 + 1
   from board;
-
-# 답글이 들어가 있는 보드 입력
-select b.id as id, b.title as title, u.user_id as userId, b.content as content, b.regdate as regdate, b.read_count as readCount, b.groupno as groupno, b.grpord as grpord, b.depth as depth
-from board b, user u
-where b.user_id = u.user_id
-order by b.groupno desc, b.grpord;
+-----------------------------------------------------------------------------------------------------------
+update board SET grpord = grpord + 1 where groupno = 2 and grpord >= 0 + 1;
+insert into board (title, user_id, content, groupno, grpord, depth) values (?, ?, ?, ?,? + 1, ? + 1)
 
 #보드 삭제
 drop table board;

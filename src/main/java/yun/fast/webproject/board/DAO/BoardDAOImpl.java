@@ -16,8 +16,8 @@ public interface BoardDAOImpl {
     void updateBoard(Long id, String title, String content);
     void selectCount(Long id);
 //    boolean checkgrpord(int groupno, int grpord);
-    void creategrp(String title, String userId, String content,int groupno, int grpord, int depth);
+    void createGrp(String title, String userId, String content, int groupno, int grpord, int depth);
 //    void existCreategrp(Long id, String title, String userId, String content,int groupno, int grpord, int depth);
-    void updategrp(int groupno, int grpord);
+    void updateGrp(int groupno, int grpord);
 
 }

@@ -1,4 +1,4 @@
-package yun.fast.webproject.board.DAO;
+package yun.fast.webproject.board.Util;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
